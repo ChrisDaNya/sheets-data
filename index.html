@@ -1,110 +1,26 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-<meta charset="UTF-8">
-<title>台陸服更新時程對照</title>
-<style>
-  body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont;
-    padding: 16px;
-  }
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    font-size: 14px;
-  }
-  th, td {
-    border: 1px solid #999;
-    padding: 6px 8px;
-    vertical-align: top;
-  }
-  th {
-    background: #f0f0f0;
-    cursor: pointer;
-    user-select: none;
-  }
-  th.sort-asc::after { content: " ▲"; }
-  th.sort-desc::after { content: " ▼"; }
-  .region {
-    background: #fafafa;
-    font-weight: bold;
-    text-align: center;
-  }
-</style>
-</head>
+window.sheetData = [
+  ["開服","231221","--","常駐班底","","","開服","241205","--","常駐班底","",""],
 
-<body>
-<h1>台陸服更新時程對照表</h1>
+  ["異鄉樂徽","231225","240123","黛煙(物)","","","玻璃島的\n駐行者","241205","241225","索米(冰)/烏爾麗德(物)/\n洛塔(冰)","",""],
 
-<table id="table"></table>
+  ["方糖特調\n沙龍籌備","240123","240223","桑朵莱希(火)","","","狂想四重奏","241226","250115","瑪綺朵(冰)/波波沙(物)","",""],
 
-<script>
-fetch('./gfl_exilium_dollupdate.csv')
-  .then(r => r.text())
-  .then(text => {
-    const rows = text.trim().split('\n').map(r => r.split(','));
-    const headers = rows[0];
-    const data = rows.slice(1).map(r => {
-      const obj = {};
-      headers.forEach((h, i) => obj[h] = r[i] ?? '');
-      return obj;
-    });
+  ["交織突進","240223","240326","萊娜(電)","","","於灰敗的\n羽翼中","250116","250205","黛煙(物)","",""],
 
-    const table = document.getElementById('table');
-    let sortKey = null;
-    let sortDir = 1;
+  ["循跡追演","240326","240430","絳雨(電)","黛煙(物)","","駐足之地","250206","250226","杜莎妮(冰)","",""],
 
-    function render(data) {
-      table.innerHTML = '';
+  ["狂想四重奏","240430","240605","瑪綺朵(冰)","桑朵莱希(火)","","方糖特調沙龍","250227","250319","桑朵莱希(火)","索米(冰)",""],
 
-      const thead = document.createElement('thead');
-      const tr = document.createElement('tr');
+  ["玻璃島的\n駐行者(上)","240605","240625","烏爾麗德(物)/洛塔(冰)","萊娜(電)","","遠日點(上)","250320","250409","可露凱(毒)","瑪綺朵(冰)",""],
 
-      headers.forEach(h => {
-        const th = document.createElement('th');
-        th.textContent = h;
-        if (h === sortKey) {
-          th.classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
-        }
-        th.onclick = () => {
-          if (sortKey === h) {
-            sortDir *= -1;
-          } else {
-            sortKey = h;
-            sortDir = 1;
-          }
-          data.sort((a, b) => {
-            const A = a[h] || '';
-            const B = b[h] || '';
-            const nA = Number(A);
-            const nB = Number(B);
-            if (!isNaN(nA) && !isNaN(nB)) return (nA - nB) * sortDir;
-            return A.localeCompare(B, 'zh-Hant') * sortDir;
-          });
-          render(data);
-        };
-        tr.appendChild(th);
-      });
+  ["玻璃島的\n駐行者(下)","240625","240716","索米(冰)","絳雨(電)","","遠日點(下)","250410","250430","米什緹(毒)","黛煙(物)",""],
 
-      thead.appendChild(tr);
-      table.appendChild(thead);
+  ["駐足之地","240716","240806","杜莎妮(冰)","瑪綺朵(冰)","","逃離賽博格","250501","250521","維克托(火)","杜莎妮(冰)",""],
 
-      const tbody = document.createElement('tbody');
-      data.forEach(row => {
-        const tr = document.createElement('tr');
-        headers.forEach(h => {
-          const td = document.createElement('td');
-          td.textContent = row[h];
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
+  ["拂曉的迴響","240806","240827","朝暉(水)/波波沙(物)","烏爾麗德(物)","","心智洄游·\n素銀匿信","250522","250611","幼熙(物)","桑朵莱希(火)",""],
 
-      table.appendChild(tbody);
-    }
+  ["遠日點(上)","240827","240919","可露凱(毒)","索米(冰)","黛煙(物)/桑朵莱希(火)/\n萊娜(電)/絳雨(電)/\n瑪綺朵(冰)",
+   "拂曉的迴響","250612","250702","朝暉(水)","可露凱(毒)",""],
 
-    render(data);
-  });
-</script>
-</body>
-</html>
+  ["遠日點(下)","240919","241009","米什緹(毒)","杜莎妮(冰)","","密米爾的\n返演","250703","250723","春田(水)/佩莉(火)/\n緋(物)","米什緹(毒)","索米(冰)/烏爾麗德(物)/\n瑪綺朵(冰)/黛煙(物)"]
+];
