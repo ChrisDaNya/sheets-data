@@ -36,74 +36,55 @@
 <body>
 <h1>台陸服更新時程對照表</h1>
 
-<table id="table"></table>
+<table>
+  <thead>
+    <tr>
+      <th>陸服</th>
+      <th>起</th>
+      <th>迄</th>
+      <th>新實裝人形</th>
+      <th>陪跑復刻</th>
+      <th>自選池</th>
+      <th>台服</th>
+      <th>起</th>
+      <th>迄</th>
+      <th>新實裝人形</th>
+      <th>陪跑復刻</th>
+      <th>自選池</th>
+    </tr>
+  </thead>
+  <tbody id="table-body"></tbody>
+</table>
 
+<script src="data.js"></script>
 <script>
-fetch('./gfl_exilium_dollupdate.csv')
-  .then(r => r.text())
-  .then(text => {
-    const rows = text.trim().split('\n').map(r => r.split(','));
-    const headers = rows[0];
-    const data = rows.slice(1).map(r => {
-      const obj = {};
-      headers.forEach((h, i) => obj[h] = r[i] ?? '');
-      return obj;
+  const tableBody = document.getElementById("table-body");
+
+  SHEET_DATA.forEach(row => {
+    const tr = document.createElement("tr");
+
+    const cells = [
+      row.name1,
+      row.value1,
+      row.value2,
+      row.note1,
+      row.note2,
+      row.note3,
+      row.name2,
+      row.value3,
+      row.value4,
+      row.note4,
+      row.note5,
+      row.note6
+    ];
+
+    cells.forEach(value => {
+      const td = document.createElement("td");
+      td.textContent = value ?? "";
+      tr.appendChild(td);
     });
 
-    const table = document.getElementById('table');
-    let sortKey = null;
-    let sortDir = 1;
-
-    function render(data) {
-      table.innerHTML = '';
-
-      const thead = document.createElement('thead');
-      const tr = document.createElement('tr');
-
-      headers.forEach(h => {
-        const th = document.createElement('th');
-        th.textContent = h;
-        if (h === sortKey) {
-          th.classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
-        }
-        th.onclick = () => {
-          if (sortKey === h) {
-            sortDir *= -1;
-          } else {
-            sortKey = h;
-            sortDir = 1;
-          }
-          data.sort((a, b) => {
-            const A = a[h] || '';
-            const B = b[h] || '';
-            const nA = Number(A);
-            const nB = Number(B);
-            if (!isNaN(nA) && !isNaN(nB)) return (nA - nB) * sortDir;
-            return A.localeCompare(B, 'zh-Hant') * sortDir;
-          });
-          render(data);
-        };
-        tr.appendChild(th);
-      });
-
-      thead.appendChild(tr);
-      table.appendChild(thead);
-
-      const tbody = document.createElement('tbody');
-      data.forEach(row => {
-        const tr = document.createElement('tr');
-        headers.forEach(h => {
-          const td = document.createElement('td');
-          td.textContent = row[h];
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
-
-      table.appendChild(tbody);
-    }
-
-    render(data);
+    tableBody.appendChild(tr);
   });
 </script>
 </body>
