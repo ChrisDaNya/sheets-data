@@ -1,25 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>台陸服更新時程對照</title>
+<style>
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont;
+    padding: 16px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid #999;
+    padding: 6px 8px;
+    vertical-align: top;
+  }
+  th {
+    background: #f0f0f0;
+    cursor: pointer;
+    user-select: none;
+  }
+  th.sort-asc::after { content: " ▲"; }
+  th.sort-desc::after { content: " ▼"; }
+  .region {
+    background: #fafafa;
+    font-weight: bold;
+    text-align: center;
+  }
+</style>
+</head>
+
+<body>
+<h1>台陸服更新時程對照表</h1>
+
+<table id="table"></table>
+
 <script>
 fetch('./gfl_exilium_dollupdate.csv')
-  .then(res => res.text())
+  .then(r => r.text())
   .then(text => {
     const rows = text.trim().split('\n').map(r => r.split(','));
-
-    const table = document.createElement('table');
-    table.border = 1;
-
-    rows.forEach((row, i) => {
-      const tr = document.createElement('tr');
-      row.forEach(cell => {
-        const el = document.createElement(i === 0 ? 'th' : 'td');
-        el.textContent = cell;
-        tr.appendChild(el);
-      });
-      table.appendChild(tr);
+    const headers = rows[0];
+    const data = rows.slice(1).map(r => {
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = r[i] ?? '');
+      return obj;
     });
 
-    document.body.appendChild(table);
-  })
-  .catch(err => {
-    document.body.innerHTML += '<pre>' + err + '</pre>';
+    const table = document.getElementById('table');
+    let sortKey = null;
+    let sortDir = 1;
+
+    function render(data) {
+      table.innerHTML = '';
+
+      const thead = document.createElement('thead');
+      const tr = document.createElement('tr');
+
+      headers.forEach(h => {
+        const th = document.createElement('th');
+        th.textContent = h;
+        if (h === sortKey) {
+          th.classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
+        }
+        th.onclick = () => {
+          if (sortKey === h) {
+            sortDir *= -1;
+          } else {
+            sortKey = h;
+            sortDir = 1;
+          }
+          data.sort((a, b) => {
+            const A = a[h] || '';
+            const B = b[h] || '';
+            const nA = Number(A);
+            const nB = Number(B);
+            if (!isNaN(nA) && !isNaN(nB)) return (nA - nB) * sortDir;
+            return A.localeCompare(B, 'zh-Hant') * sortDir;
+          });
+          render(data);
+        };
+        tr.appendChild(th);
+      });
+
+      thead.appendChild(tr);
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        headers.forEach(h => {
+          const td = document.createElement('td');
+          td.textContent = row[h];
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(tbody);
+    }
+
+    render(data);
   });
 </script>
+</body>
+</html>
