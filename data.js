@@ -89,7 +89,7 @@ const SHEET_DATA = [
 重度依賴"", value3: 問飛鏢 , value4: , note4: ""貝絲蒂(毒)"", note5: """", note6: """"},"																									
 "{ name1: ""鑄碑者的
 黎明(上)"", value1: 251223, value2: 260113, note1: ""夏安(物)"", note2: ""翡圖薩(毒)/
-萊婭(電)"", note3: """", name2: """", value3:  , value4: , note4: """", note5: """", note6: """"},"																									
+萊婭(電)"", note3: """", name2: """", value3:  , value4: , note4: """", note5: """", note6: """"},"
 "{ name1: ""信號波
 重度依賴"", value1: 260113, value2: 260203, note1: ""貝絲蒂(毒)"", note2: ""櫻花(火)"", note3: """", name2: """", value3:  , value4: , note4: """", note5: """", note6: """"},"																									
 ];
