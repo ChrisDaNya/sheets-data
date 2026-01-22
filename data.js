@@ -1,5 +1,3 @@
-法、可被網頁讀取：
-
 const SHEET_DATA = [
   {
     name1: "陸服",
