@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>sheets-data</title>
 </head>
 <body>
   <h1>sheets-data</h1>
+
   <pre id="output">讀取中…</pre>
 
+  <!-- 載入 data.js（會執行，產生 SHEET_DATA） -->
+  <script src="./data.js"></script>
+
   <script>
-    fetch('./data.js')
-      .then(res => res.text())
-      .then(text => {
-        document.getElementById('output').textContent = text;
-      })
-      .catch(err => {
-        document.getElementById('output').textContent = '錯誤：' + err;
-      });
+    if (typeof SHEET_DATA === 'undefined') {
+      document.getElementById('output').textContent =
+        '❌ SHEET_DATA 未載入';
+    } else {
+      document.getElementById('output').textContent =
+        JSON.stringify(SHEET_DATA, null, 2);
+    }
   </script>
 </body>
 </html>
