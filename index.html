@@ -60,33 +60,19 @@
 <script>
   const tableBody = document.getElementById("table-body");
 
-  SHEET_DATA.forEach(row => {
+  console.log("SHEET_DATA =", window.SHEET_DATA);
+
+  window.SHEET_DATA.forEach(row => {
     const tr = document.createElement("tr");
 
-    const cells = [
-      row.name1,
-      row.value1,
-      row.value2,
-      row.note1,
-      row.note2,
-      row.note3,
-      row.name2,
-      row.value3,
-      row.value4,
-      row.note4,
-      row.note5,
-      row.note6
-    ];
-
-    cells.forEach(value => {
+    row.forEach(cell => {
       const td = document.createElement("td");
-      td.textContent = value ?? "";
+      td.textContent = cell ?? "";
       tr.appendChild(td);
     });
 
     tableBody.appendChild(tr);
   });
-  console.log("DATA =", window.SHEET_DATA || window.sheetData);
 </script>
 </body>
 </html>
