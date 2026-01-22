@@ -5,8 +5,14 @@
   <title>sheets-data</title>
 </head>
 <body>
-  <h1>sheets-data 已成功啟用</h1>
-  <p>GitHub Pages 正常運作中。</p>
+  <h1>sheets-data</h1>
+  <pre id="output"></pre>
+
+  <script src="data.js"></script>
+  <script>
+    document.getElementById("output").textContent =
+      JSON.stringify(sheetData, null, 2);
+  </script>
 </body>
 </html>
 fetch('./data.js')
