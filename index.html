@@ -1,25 +1,76 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>sheets-data</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                   "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      padding: 16px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px 8px;
+      vertical-align: top;
+    }
+    th {
+      background: #f5f5f5;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    tr:nth-child(even) {
+      background: #fafafa;
+    }
+  </style>
 </head>
 <body>
-  <h1>sheets-data</h1>
 
-  <pre id="output">讀取中…</pre>
+<h1>sheets-data</h1>
 
-  <!-- 載入 data.js（會執行，產生 SHEET_DATA） -->
-  <script src="./data.js"></script>
+<table id="data-table"></table>
 
-  <script>
-    if (typeof SHEET_DATA === 'undefined') {
-      document.getElementById('output').textContent =
-        '❌ SHEET_DATA 未載入';
-    } else {
-      document.getElementById('output').textContent =
-        JSON.stringify(SHEET_DATA, null, 2);
-    }
-  </script>
+<script src="./data.js"></script>
+<script>
+  const table = document.getElementById("data-table");
+
+  if (!Array.isArray(SHEET_DATA) || SHEET_DATA.length === 0) {
+    table.innerHTML = "<tr><td>沒有資料</td></tr>";
+  } else {
+    // 取得所有欄位名稱（從第一筆）
+    const columns = Object.keys(SHEET_DATA[0]);
+
+    // 表頭
+    const thead = document.createElement("thead");
+    const headRow = document.createElement("tr");
+    columns.forEach(col => {
+      const th = document.createElement("th");
+      th.textContent = col;
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    // 表身
+    const tbody = document.createElement("tbody");
+    SHEET_DATA.forEach(row => {
+      const tr = document.createElement("tr");
+      columns.forEach(col => {
+        const td = document.createElement("td");
+        td.textContent = row[col] ?? "";
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+  }
+</script>
+
 </body>
 </html>
